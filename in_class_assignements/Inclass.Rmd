@@ -1,0 +1,83 @@
+---
+author: "Heather Parry"
+title: "In class Oct 20"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Here is a demonstration of how to use
+
+
+## making a new code chunk
+
+the shortcut key on mac command- option-i
+
+If I press this key combo, RStudio will insert a new code chunk!
+If I want, I can give the chunk a name
+
+```{r how to make a new chunk}
+
+```
+
+## Reading a csv file
+
+I'm going to read some data from a csv (comma-separated-values) file.
+
+I can use read.csv() along with the path to the file to read the data into a data.frame.
+
+Here's an example:
+
+```{r read_birds_data}
+library(here)
+require(here)
+dat_birds = read.csv(here("data", "hab.sta.csv"))
+
+
+```
+
+## Previewing the contents of a data.frame
+
+I can use the head() function to print the first few lines of a data.frame.
+
+Here's an example with the birds data
+
+```{r head_function_demo}
+head(dat_birds)
+
+
+
+```
+
+## Demo plot
+
+I can use hist() to create a histogram
+
+When I plot 
+```{r simple plot}
+
+hist(dat_birds$aspect)
+
+
+
+```
+
+## How to customize a histogram
+
+I can title the argument main -
+
+
+```{r customize histogram 1}
+hist(dat_birds$aspect, 
+     main = "Histogram of study site aspect",
+     breaks = 36)
+
+```
+
