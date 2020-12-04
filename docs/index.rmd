@@ -40,29 +40,17 @@ options(knitr.duplicate.label = TRUE)
 
 
 
-
+ 
 # Introduction
 
-Type a brief introduction here.
+This is the final project for the ECO 602 :Analysis of Environmental Data class. The first part of this document consists of examples of commonly used R code to accomplish data analysis for this class. 
+
+Part 2 of this project is a data analysis of a data set of Delomys species looking at species and sex effects on body mass of the animals.
 
 
 # Functions 1: Data Structure Functions {.tabset .tabset-pills}
 
-Look at the source code for the final project template, you'll notice the text:
-
-{.tabset .tabset-pills}
-
-This creates tabbed content for all the following sections that are one-level below.
-
-- If you include them on a primary header (one #), all of the subsequent secondary headers will in tabs.
-
-
-
-
 ## `c()`
-
-The following is the markdown text needed to reproduce my code example for `c()`:
-
 
 The function `c()` *combines* or *concatenates* its arguments into a vector (a 1-dimensional data structure consisting of 1 or more elements).
 
@@ -217,18 +205,16 @@ require(palmerpenguins)
 
 plot(bill_length_mm~ body_mass_g, 
      data= penguins,
-     col = 2,
-     pch = 16, 
-     cex = .5,
+     col = 2, # col is the color of the points
+     pch = 16, # pch is the symbols used in the scatterplot
+     cex = .5, # cex is the size of the points
      main= "Penguin body mass vs. bill length",
      xlab = "body mass, g",
      ylab = "bill lengh, mm",
      xlim = c(2500, 6500),
-     ylim = c(30, 60))
-# pch is the symbols used in the scatterplot
-# col is the color of the points
-# cex is the size of the points
-# xlim and ylim are the limits of the x and y axis and are in a vector form
+     ylim = c(30, 60)) # xlim and ylim are the limits of the x and y axis and are in a vector form
+
+
 ```
 
 
@@ -236,7 +222,7 @@ plot(bill_length_mm~ body_mass_g,
 
 I can use `boxplot()` to make a simple or conditional boxplot.
 
-Below is a simple boxplot looking at the body mass of all of the penguins in the Palmer Penguins dataset.
+Below is a simple boxplot looking at the body mass of all of the penguins in the Palmer Penguins dataset. You can also add titles and axis labels to boxplots, this is accomplished in the same format as in the scatterplots.
 ```{r}
 require(palmerpenguins)
 penguins<- penguins
@@ -257,11 +243,10 @@ boxplot(body_mass_g ~ species, data = penguins)
 
 Below is a histogram of the body mass of all of the penguins in the Palmer Penguins dataset using `hist()`
 ```{r}
-hist(penguins$body_mass_g, breaks = 80, main = "Histogram of Body Mass", xlab = "body mass (g)")
-
-#breaks = is the number of columns that the histogram is broken up into.
-#main = is the title of the histogram
-#xlab = is the label of the x axis
+hist(penguins$body_mass_g, 
+     breaks = 80, #breaks = is the number of columns that the histogram is broken up into.
+     main = "Histogram of Body Mass",#main = is the title of the histogram
+     xlab = "body mass (g)")#xlab = is the label of the x axis
 
 ```
 
@@ -270,14 +255,11 @@ hist(penguins$body_mass_g, breaks = 80, main = "Histogram of Body Mass", xlab = 
 The `par()` function allows you to arrange multiple plots in one window.
 
 ```{r}
-par(mfrow = c(1,2))
+par(mfrow = c(1,2))#mfrow() tells R how to arrange the boxplots. c(1,2) tells R to arrange them with 1 row and 2 columns
 boxplot(penguins$body_mass_g)
 boxplot(body_mass_g ~ species, data = penguins)
+dev.off()#dev.off() clears the plot window
 
-dev.off()
-
-#dev.off() clears the plot window
-#mfrow() tells R how to arrange the boxplots. c(1,2) tells R to arrange them with 1 row and 2 columns
 
 ```
 
@@ -319,7 +301,6 @@ qnorm is the quantile function. You can answer questions such as: what is the 20
 ```{r}
 qnorm(.2, mean = 5, sd = 1)
 ```
-? qnorm lower.tail = TRUE default is that a one tailed test by default 
 
 
 ## `dbinorm()`
@@ -357,28 +338,28 @@ qbinom(.10, size = 10, prob = .4)
 # Functions 5: Other Functions {.tabset .tabset-pills}
 
 ## `subset()`
+
+The `subset()` function allows you to subset a dataset. In the example below I was able to separate the Gentoo penguins' data from the rest of the data frame. I reassigned the subset to gentoo_penguins.
 ```{r}
-gentoo_penguins= subset(penguins,species == "Gentoo")
+gentoo_penguins= subset(penguins,species == "Gentoo") #penguins is the dataframe, species =="Gentoo" allows us to select only the data for the species Gentoo.
 
 ```
 
 ## `libary()` and `require()`
+Both library() and require() access the library where packages in R are stored. Packages in R contain functions that you may want to access. Palmer Penguins is a package in R so using libary() or require() will allow you to access that data.
 ```{r}
 require(palmerpenguins)
-penguins<- penguins
+penguins<- penguins #I assigned the Palmer Penguins dataset the name penguins
 
 ```
 
 ## `read.csv()`
+
+The read.csv() function allows you to import a csv file into R. In this example, I downloaded the catrate data into R and convert it to a dataframe with the read.csv(here(...)) function. 
 ```{r}
-#I downloaded the catrate data into R and convert it to a data frame with the read.csv(here(...)) function
-catrate = read.csv(here("data", "catrate.csv"))
+
+catrate = read.csv(here("data", "catrate.csv"))# "here" allows you to find the data on your computer. "dat" is the folder that the the catrate.csv file is saved.
 ```
-
-
-
-
-
 
 
 
@@ -388,7 +369,7 @@ catrate = read.csv(here("data", "catrate.csv"))
 
 ### Numerical Exploration 
 
-`summary()`
+**Summary**
 ```{r}
 library(here)
 delomys_dat = read.csv(here("data", "delomys.csv"))
@@ -396,7 +377,7 @@ summary(delomys_dat$body_mass)
 summary(delomys_dat$body_length)
 ```
 
-`shapiro.test()`
+**Shapiro- Wilk Normality test**
 ```{r}
 shapiro.test(delomys_dat$body_mass)
 shapiro.test(delomys_dat$body_length)
@@ -404,82 +385,101 @@ shapiro.test(delomys_dat$body_length)
 
 ### Graphical Exploration
 
-scatterplot using `plot()`
+**Scatterplot of body length and body mass**
 
 ```{r}
 
 plot(body_length ~ body_mass, 
-     data= delomys_dat)
+     data= delomys_dat,
+     main = "Body Length vs. Body Mass in Delomys",
+     xlab = "body mass",
+     ylab = "body length")
 
 ```
 
 
-histogram using `hist()`
+**Histograms**
 
 ```{r}
-hist(delomys_dat$body_mass)
-```
-
-```{r}
-hist(delomys_dat$body_length)
-```
-
-boxplot using `boxplot()`
-
-```{r}
-boxplot(body_mass ~ binomial, data = delomys_dat)
+hist(delomys_dat$body_mass,
+     main = "Delomys Body Mass",
+     xlab = "body mass")
 ```
 
 ```{r}
-boxplot(body_mass ~ sex, data = delomys_dat)
+hist(delomys_dat$body_length,
+     main = "Delomys Body Length",
+     xlab = "body length")
+```
+
+**Boxplots**
+
+```{r}
+boxplot(body_mass ~ binomial, data = delomys_dat,
+        main = "Delomys Body Mass by Species",
+        xlab = "species",
+        ylab = "body mass")
 ```
 
 ```{r}
-boxplot(body_mass ~ sex * binomial, data = delomys_dat) 
+boxplot(body_mass ~ sex, data = delomys_dat,
+        main = "Delomy Body Mass by Sex",
+        xlab = "sex",
+        ylab = "body mass")
 ```
 
-Answer these questions:
-Qualitatively describe the relationship between body mass and length.
-Does the relationship seem linear, curved, nonexistent?
-Qualitatively describe the shapes of the histograms.
-Do the data appear normally-distributed? Explain why or why not.
-Using both the histograms and normality tests, do you think the (unconditioned) body masses and body length are normally-distributed?
-Contrast your visual assessment of normality to the results of the numerical normality tests.
-Examine the conditional boxplots. Describe any graphical evidence you see for body mass differences based on species and/or sex.
+```{r}
+boxplot(body_mass ~ sex * binomial, data = delomys_dat,
+        main = "Delomys Body Mass by Sex and Species",
+        xlab = "sex and species",
+        ylab = "body mass") 
+```
+
+**Questions**
+
+1) The scatterplot of body length vs. body mass indicates that as the body length increases so does the body mass of the animals. The relationship between body length and body mass seems linear or slightly curved.
+
+2) The body mass histogram seems to have a normal distribution except that there are large values on the right side of the histogram. It makes it look like there is a tail coming off the right side of the graph.  The body length histogram also looks normally distributed except for a long tail off to the right side of the graph. This histogram doesn't look as much like a normal distribution as the body mass histogram
+
+3)
+The histograms seem to indicate that the data might not be normally distributed because of the long tails on the right side of the graphs, but it didn't clearly indicate that it was non-normal. The Shapiro tests confirm that the distribution was not normal. The p-values for for the body mass and the body length of very small indicating that the data is not normally distributed. 
+ 
+4)
+Looking at the boxplots it appears that species might have an effect on body mass. The mean value of the Delomys sublineatus looks smaller than the Delomys dorsalis. Sex by itself doesn't seem to effect body mass.
 
 
 ## Model Building
 
-Model 1: simple linear regression
+**Model 1: simple linear regression**
 ```{r}
 fit1 = lm(body_length ~ body_mass, data = delomys_dat)
 ```
 
-Model 2: 1-way ANOVA body_mass ~ sex
+**Model 2: 1-way ANOVA body_mass ~ sex**
 
 ```{r}
 fit2 = lm(body_mass ~ sex, data = delomys_dat)
-anova(fit2)
+
 
 ```
 
-Model 3: 1-way ANOVA body_mass ~ binomial
+**Model 3: 1-way ANOVA body_mass ~ binomial**
 ```{r}
 fit3 = lm(body_mass ~ binomial, data = delomys_dat)
-anova(fit3)
+
 ```
 
-Model 4: 2 additive ANOVA body_mass ~ sex + binomial
+**Model 4: 2 additive ANOVA body_mass ~ sex + binomial**
 
 ```{r}
 fit4 = lm(body_mass ~ sex + binomial, data = delomys_dat)
-anova(fit4)
+
 ```
 
-Model 5: 2-way factorial ANOVA
+**Model 5: 2-way factorial ANOVA**
 ```{r}
 fit5 = lm(body_mass ~ sex * binomial, data = delomys_dat)
-anova(fit5)
+
 ```
 
 
@@ -487,10 +487,13 @@ anova(fit5)
 
 ## Model Diagnostic
 
-Residuals fit1
+**Residuals fit1**
+
 ```{r}
 resids_fit1 = residuals(fit1) 
-hist(resids_fit1, 
+hist(resids_fit1,
+     main = "Histogram of Residuals of Fit1",
+     xlab = "residuals",
      breaks = 80,
      xlim = c(-50, 50))
 
@@ -498,138 +501,248 @@ shapiro.test(resids_fit1)
 
 ```
 
-Residuals fit2
+
+
+**Residuals fit2**
+
 ```{r}
 resids_fit2 = residuals(fit2)
 hist(resids_fit2,
+     main = "Histogram of Residuals of Fit2",
+     xlab = "residuals",
      breaks = 10)
 
 shapiro.test(resids_fit2)
 
 ```
 
-Residuals fit3
+
+
+**Residuals fit3**
+
 ```{r}
 resids_fit3 = residuals(fit3)
 hist(resids_fit3,
+     main = "Histogram of Residuals of Fit3",
+     xlab = "residuals",
      breaks = 20, 
      xlim = c(-60, 60))
 
 shapiro.test(resids_fit3)
 ```
 
-Residuals fit4
+
+
+**Residuals fit4**
+
 ```{r}
 resids_fit4 = residuals(fit4)
-hist(resids_fit4)
+hist(resids_fit4,
+     main = "Histogram of Residuals of Fit4",
+     xlab = "residuals",
+     breaks = 20)
 
 shapiro.test(resids_fit4)
 
 ```
 
-Residuals fit5
+
+
+**Residuals fit5**
+
 ```{r}
 resids_fit5 = residuals(fit5)
-hist(resids_fit5)
+hist(resids_fit5,
+     main = "Histogram of Residuals of Fit5",
+     xlab = "residuals",
+     breaks = 20)
 
 shapiro_resids_5 = shapiro.test(resids_fit5)
-str(shapiro_resids_5)
+
 ```
 
-Answer these questions
-What do you conclude about residual normality based on the numerical and graphical diagnostics?
-Are violations of the normality assumption equally severe for all the models?
+**Questions**
 
-## Model Interpretation
+1) The residuals based on graphical and numerical analysis are not normally distributed. The histograms all showed a somewhat normally distribution of the residuals but there was a tail to the right side of the graph. The numerical analysis all resulted in a p-value of less than .05. So we can assume that the residuals are not normally distributed.
 
-Model fit 1: Simple linear regression
+
+2) The violation of the normality assumption was not as severe with fit 2. Although the p-value for Fit2 was less than .05 it had the largest p-value of all of the fits.
+
+
+## Model Interpretation {.tabset .tabset-pills}
+
+### Body Length
+
+**Model fit 1: Simple linear regression**
 
 `body_length ~ body_mass`
 ```{r, }
 knitr::kable(coef(summary(fit1)), digits = 2)
 
-knitr::kable(anova(fit1), digits = 2)
 ```
 
-Model fit 2
-1-way ANOVA 
-`body_mass ~ sex`
+**Questions**
+
+1) The magnitude of the mass/length relationship is .88.
+
+2) The expected body length of an animal that weights 100g is 164.12.
+
+3) The expected body length of an animal that weighs 0g is 76.12
+
+### Body Mass : Model Coeffiecients
+
+**Coefficient Tables**
+
+**Model fit 1: Simple linear regression**
+
+`body_length ~ body_mass`
+```{r, }
+knitr::kable(coef(summary(fit1)), digits = 2)
+
+```
+
+**Model fit 2**
+1-way ANOVA
+`body_mass ~ sex`**
 
 ```{r}
 knitr::kable(coef(summary(fit2)), digits = 2)
 
-knitr::kable(anova(fit2), digits = 2)
 ```
 
-Model fit 3
+**Model fit 3**
 1-way ANOVA 
 `body_mass ~ binomial`
 
 ```{r}
 knitr::kable(coef(summary(fit3)), digits = 2)
 
-knitr::kable(anova(fit3), digits = 2)
 ```
 
-Model fit 4
+**Model fit 4**
 2-way additive ANOVA
 `body_mass ~ sex + binomial`
 
 ```{r}
 knitr::kable(coef(summary(fit4)), digits = 2)
 
-knitr::kable(anova(fit4), digits = 2)
 ```
 
-Model fit 5
+**Model fit 5**
 2-way factorial ANOVA
 `body_mass ~ sex * binomial
 
 ```{r}
 knitr::kable(coef(summary(fit5)), digits = 2)
 
+```
+
+**Questions**
+
+1) What is the base level for sex? **female**
+
+2) What is the base level for binomial? **Delomys dorsalis**
+
+3) Which sex is heavier? **male**
+
+4) Which species is heavier? **Delmoys dorsalis**
+
+
+### Body Mass: ANOVA
+
+**ANOVA Tables**
+
+**Model fit 1: Simple linear regression**
+
+`body_length ~ body_mass`
+```{r, }
+
+knitr::kable(anova(fit1), digits = 2)
+```
+
+**Model fit 2**
+1-way ANOVA 
+`body_mass ~ sex`
+
+```{r}
+
+knitr::kable(anova(fit2), digits = 2)
+```
+
+**Model fit 3**
+1-way ANOVA 
+`body_mass ~ binomial`
+
+```{r}
+
+knitr::kable(anova(fit3), digits = 2)
+```
+
+**Model fit 4**
+2-way additive ANOVA
+`body_mass ~ sex + binomial`
+
+```{r}
+
+knitr::kable(anova(fit4), digits = 2)
+```
+
+**Model fit 5**
+2-way factorial ANOVA
+`body_mass ~ sex * binomial
+
+```{r}
+
 knitr::kable(anova(fit5), digits = 2)
 ```
+
+**Questions**
+
+1) Sex and species are both significant predictors for body mass. The ANOVA tables above all show very small p-values for sex and for species which indicates that both variables are significant predictors of body mass.
+
+2) There is not a significant interaction between species and sex. Fit5 is the model in which there is an interaction between sex and species had a high p-value of .95 for the interaction row of the ANOVA table and an F-value of 0.
+
+3) The p-values for the sex and species do not differ much between the single-predictor and the additive models. They do vary with the interactive model (Fit 5) as seen in the row for the interaction between sex and species which has a large p-value (p-value = .95)
 
 
 
 ## Model Comparison: Body Mass
 
-Model fit1 
 
-```{r}
-AIC(fit1)
-```
-
-Model fit2
+**Model fit 2**
 
 ```{r}
 AIC(fit2)
 ```
 
-Model fit3
+**Model fit 3**
 ```{r}
 AIC(fit3)
 ```
 
-Model fit4
+**Model fit 4**
 ```{r}
 AIC(fit4)
 ```
 
-Model fit5
+**Model fit 5**
 
 ```{r}
 AIC(fit5)
 ```
 
+**Questions**
+
+1) Models Fit4 and Fit5 had the lowest AIC. Fit4 is the additive model and Fit5 is the interactive model.
+
+2) I would choose to use model Fit4. It had the lowest AIC score. The additive models are also a less complex model than an interactive model. Also in the ANOVA table of Fit5 the p-value for the interaction between sex and species was very large indicating that there was no significant interaction. So I would select model fit4 because it is the simplest model that explains the species and the sex effect on body mass.
 
 
 
 
 
 
-Your data analysis materials will go here.
+
 
 
 
