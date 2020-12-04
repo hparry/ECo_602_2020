@@ -97,7 +97,7 @@ The first argument (1:12) is the collection of elements that R will arrange into
 
 The second argument `byrow` tells R that the matrix is filled by the rows. If you want the matrix to be filled by the columns, we just place byrow = FALSE.
 
-The third argument `nrow` tells R that the matrix how many rows there should be in the matrix.
+The third argument `nrow` tells R how many rows there should be in the matrix.
 
 ```{r}
 matrix(1:12, byrow = TRUE, nrow = 3)
@@ -176,7 +176,7 @@ summary(catrate)
 To find the mean value of a category or column in your data frame you can use the `mean()` function.
 ```{r}
 # I want to find the mean value of the catastrophic rate in my data frame catrate. 
-mean(catrate$cat.rate)
+mean(catrate$cat.rate) # $ allow you to pull out the column in the data that you are interested in.
 ```
 
 
@@ -222,7 +222,7 @@ plot(bill_length_mm~ body_mass_g,
 
 I can use `boxplot()` to make a simple or conditional boxplot.
 
-Below is a simple boxplot looking at the body mass of all of the penguins in the Palmer Penguins dataset. You can also add titles and axis labels to boxplots, this is accomplished in the same format as in the scatterplots.
+Below is a simple boxplot looking at the body mass of all of the penguins in the Palmer Penguins dataset. 
 ```{r}
 require(palmerpenguins)
 penguins<- penguins
@@ -231,9 +231,11 @@ boxplot(penguins$body_mass_g)
 
 ```
 
-The conditional boxplot below looks at the body mass of the penguins in the Palmer Penguin dataset by their species.
+The conditional boxplot below looks at the body mass of the penguins in the Palmer Penguin dataset by their species.You can also add titles and axis labels to boxplots, this is accomplished in the same format as in the scatterplots.
 ```{r}
-boxplot(body_mass_g ~ species, data = penguins)
+boxplot(body_mass_g ~ species, data = penguins,
+        main = "Body Mass of Palmer Penguins by Species",
+        ylab = "body mass, g")
 
 ```
 
@@ -268,10 +270,10 @@ dev.off()#dev.off() clears the plot window
 
 # Functions 4: Distribution Functions {.tabset .tabset-pills}
 
-The dnorm(), pnorm() and qnorm() functions are used for continuous normal distributions. dbinorm(), pbinorm() and qbinorm() are binomial functions used for discrete distributions. 
+The dnorm(), pnorm() and qnorm() functions are used for continuous normal distributions. dbinom(), pbinom() and qbinom() are binomial functions used for discrete distributions. 
 
 ## `dnorm()`
-dnorm is the probability density function. You can us it to answer questions such as: is the value of 1.2 or 2.4 more likely?
+dnorm is the normal probability density function. You can us it to answer questions such as: is the value of 1.2 or 2.4 more likely?
 ```{r}
 # the parameters required for dnorm() are x, mean and sd. The default setting are as follows dnorm(x, mean = 0, sd = 1, log = FALSE)
 dnorm(1.2)
@@ -281,7 +283,7 @@ dnorm(2.4)
 
 
 ## `pnorm()`
-pnorm is the cumulative density function. You can use this function to answer questions such as: what is the probability of observing a value of less than 1.2 from a normally-distributed population with mean = 2 and standard deviation = 3?
+pnorm is the normal cumulative density function. You can use this function to answer questions such as: what is the probability of observing a value of less than 1.2 from a normally-distributed population with mean = 2 and standard deviation = 3?
 ```{r}
 # This gives you the values under the curve to the left (less than) the given value.
 pnorm(1.2, mean = 2, sd = 3)
@@ -297,22 +299,22 @@ pnorm(1.2, mean = 2, sd = 3)
 
 ## `qnorm()`
 
-qnorm is the quantile function. You can answer questions such as: what is the 20th percentile of your data which has a mean of 5 and a standard deviation of 1?
+qnorm is the normal quantile function. You can answer questions such as: what is the 20th percentile of your data which has a mean of 5 and a standard deviation of 1?
 ```{r}
 qnorm(.2, mean = 5, sd = 1)
 ```
 
 
-## `dbinorm()`
-dbinorm is the probability mass function. You can use these function to answer questions such as: what is the probability of observing exactly x = 3 with a sample size of 4 and a probability of .75?
+## `dbinom()`
+dbinom is the binomial probability mass function. You can use these function to answer questions such as: what is the probability of observing exactly x = 3 with a sample size of 4 and a probability of .75?
 
 ```{r}
 dbinom(3, size = 4, prob = 0.75)
 ```
 
 
-## `pbinorm()`
-pbinorm is the cumulative mass function. This function lets you answer questions such as: what is the probability of observing a count of x = 3 successes or fewer in a binomial distribution with a sample size of n = 4 and probability of p = 0.75?
+## `pbinom()`
+pbinom is the binomial cumulative mass function. This function lets you answer questions such as: what is the probability of observing a count of x = 3 successes or fewer in a binomial distribution with a sample size of n = 4 and probability of p = 0.75?
 ```{r}
 pbinom(3, size = 4, prob = 0.75)
 ```
@@ -325,7 +327,7 @@ You can use the law of probability to figure out the reciprocal value. What is t
 
 
 ## `qbinom()`
-qbinom is the quantile function. You can use this function to answer questions such as: what is the 10th quantile of a binomial distribution with a sample size of 10 and a probability of success for each trial of .4?
+qbinom is the binomial quantile function. You can use this function to answer questions such as: what is the 10th quantile of a binomial distribution with a sample size of 10 and a probability of success for each trial of .4?
 ```{r}
 
 qbinom(.10, size = 10, prob = .4)
@@ -341,9 +343,28 @@ qbinom(.10, size = 10, prob = .4)
 
 The `subset()` function allows you to subset a dataset. In the example below I was able to separate the Gentoo penguins' data from the rest of the data frame. I reassigned the subset to gentoo_penguins.
 ```{r}
+require(palmerpenguins)# import palmer penguin data in to R
+penguins<- penguins #assign data the name penguins
 gentoo_penguins= subset(penguins,species == "Gentoo") #penguins is the dataframe, species =="Gentoo" allows us to select only the data for the species Gentoo.
 
 ```
+
+## `$`
+The `$` allows you to pull out a column of data by name from you data set. In the example below I pulled the body mass data out of the gentoo_penquins dataframe.
+
+```{r}
+gentoo_penguins$body_mass_g # gentoo_penguins is a dataframe that I created in the subset example above.
+
+```
+
+## `[]`
+
+The `[]` also allows you to select a column in your data frame but you need to know what number column you are looking for. In this example I knew that body mass was the 6th column in the data frame
+
+```{r}
+gentoo_penguins[6]# the 6 column is the body mass column
+```
+
 
 ## `libary()` and `require()`
 Both library() and require() access the library where packages in R are stored. Packages in R contain functions that you may want to access. Palmer Penguins is a package in R so using libary() or require() will allow you to access that data.
@@ -358,12 +379,13 @@ penguins<- penguins #I assigned the Palmer Penguins dataset the name penguins
 The read.csv() function allows you to import a csv file into R. In this example, I downloaded the catrate data into R and convert it to a dataframe with the read.csv(here(...)) function. 
 ```{r}
 
-catrate = read.csv(here("data", "catrate.csv"))# "here" allows you to find the data on your computer. "dat" is the folder that the the catrate.csv file is saved.
+catrate = read.csv(here("data", "catrate.csv"))# "here" allows you to find the data that is stored on your computer. "data" is the folder that the the catrate.csv file is saved.
 ```
 
 
 
 # Part 2: Data Anaylsis {.tabset .tabset-pills}
+This is an analysis of data collected on two species of mammals (Delmoys dorsalis and Delmoys sublineatus) which live in the Atlantic Forests of Brazil. 
 
 ## Data Exploration {.tabset .tabset-pills}
 
@@ -387,7 +409,7 @@ shapiro.test(delomys_dat$body_length)
 
 **Scatterplot of body length and body mass**
 
-```{r}
+```{r fig.height= 5}
 
 plot(body_length ~ body_mass, 
      data= delomys_dat,
